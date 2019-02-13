@@ -3,5 +3,6 @@
 
 
 class Player:
-    def __init__(self):
-        pass
+    def __init__(self, location):
+        self.location = location
+        self.items = []
