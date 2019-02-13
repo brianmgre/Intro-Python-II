@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from item import Item
 
 # Declare all the rooms
 
@@ -33,11 +35,21 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
+
+def move_to(direct, location):
+    move = direct + '_to'
+    if hasattr(location, move):
+        return getattr(location, move)
+    print('You cannot go that way')
+    return location
+
 # Main
 #
 
 # Make a new player object that is currently in the 'outside' room.
+
+
+player = Player(room['outside'])
 
 # Write a loop that:
 #
@@ -49,3 +61,18 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+playing = True
+
+while playing:
+    print(f'\n You are: {player.location.name} \n')
+    print(player.location.description)
+    # print(f'{line}')
+    print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
+    where_to = input('Where to? ').lower()
+    if where_to == 'q':
+        playing = False
+    elif where_to in ['n', 'e', 's', 'w']:
+        player.location = move_to(where_to, player.location)
+    else:
+        print(f'Unknown input {where_to}')
