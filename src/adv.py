@@ -4,6 +4,12 @@ from item import Item
 
 # Declare all the rooms
 
+item = {
+    'gold': Item("Gold statue", """the light dances off the statue almost blindly so. The statue resembles a Roman Standard; a solid gold eagle!"""),
+
+    'rock': Item("Rock", """On the ground is a small rock, that may be a helpful distraction or weapon"""),
+}
+
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -35,12 +41,15 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+room['treasure'].item = item['gold']
+room['outside'].item = item['rock']
+
 
 def move_to(direct, location):
     move = ''.join([direct + '_to'])
     if hasattr(location, move):
         return getattr(location, move)
-    print('You cannot go that way')
+    print('\n You cannot go that way')
     return location
 
 # Main
@@ -66,6 +75,8 @@ playing = True
 
 while playing:
     print(f'\n You are: {player.location.name} \n')
+    print(f'\n You see a: {player.location.item.name}')
+    print(f'\n {player.location.item.description} \n')
     print(player.location.description)
     print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
     where_to = input('Where to? ').lower()

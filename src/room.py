@@ -7,7 +7,7 @@ class Room:
         self.name = name
         self.description = description
 
-        self.list = []
+        self.item = []
 
     def __str__(self):
         return(f'{self.description}')
