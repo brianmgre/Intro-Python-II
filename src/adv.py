@@ -37,7 +37,7 @@ room['treasure'].s_to = room['narrow']
 
 
 def move_to(direct, location):
-    move = direct + '_to'
+    move = ''.join([direct + '_to'])
     if hasattr(location, move):
         return getattr(location, move)
     print('You cannot go that way')
@@ -67,7 +67,6 @@ playing = True
 while playing:
     print(f'\n You are: {player.location.name} \n')
     print(player.location.description)
-    # print(f'{line}')
     print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
     where_to = input('Where to? ').lower()
     if where_to == 'q':
