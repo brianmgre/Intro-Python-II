@@ -57,9 +57,8 @@ def move_to(direct, location):
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
-
-player = Player(room['outside'])
+name = input('What is your name? ')
+player = Player(name, room['outside'])
 
 # Write a loop that:
 #
@@ -76,7 +75,7 @@ playing = True
 
 while playing:
     print(f'\n Inventory: {player.inventory}')
-    print(f'\n You are: {player.location.name} \n')
+    print(f'\n {player.name}, you are: {player.location.name} \n')
 
     if hasattr(player.location, 'item_to') and player.location.item_to.name not in player.inventory:
         print(f' You see a: {player.location.item_to.name}')
@@ -88,9 +87,7 @@ while playing:
         print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [g]et')
     else:
         print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
-
     where_to = input('Where to? ').lower()
-
     if where_to == 'q':
         playing = False
     elif where_to in ['n', 'e', 's', 'w', 'get']:
