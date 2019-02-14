@@ -5,4 +5,7 @@
 class Player:
     def __init__(self, location):
         self.location = location
-        self.items = []
+        self.inventory = []
+
+    def get(self):
+        self.inventory.append(self)

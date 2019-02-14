@@ -41,8 +41,8 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-room['treasure'].item = item['gold']
-room['outside'].item = item['rock']
+room['treasure'].item_to = item['gold']
+room['outside'].item_to = item['rock']
 
 
 def move_to(direct, location):
@@ -51,6 +51,7 @@ def move_to(direct, location):
         return getattr(location, move)
     print('\n You cannot go that way')
     return location
+
 
 # Main
 #
@@ -74,12 +75,16 @@ player = Player(room['outside'])
 playing = True
 
 while playing:
+    print(hasattr(player.location, 'item_to'))
     print(f'\n You are: {player.location.name} \n')
-    print(f'\n You see a: {player.location.item.name}')
-    print(f'\n {player.location.item.description} \n')
+    if hasattr(player.location, 'item_to'):
+        print(f'\n You see a: {player.location.item_to.name}')
+        print(f'\n {player.location.item_to.description} \n')
     print(player.location.description)
-    print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
+    print('\nGo [n]orth, [e]ast, [s]outh, [w]est, g')
+
     where_to = input('Where to? ').lower()
+
     if where_to == 'q':
         playing = False
     elif where_to in ['n', 'e', 's', 'w']:
