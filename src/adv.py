@@ -62,6 +62,9 @@ def look(player, location):
 def closer_look(player, location):
     player.location.inspect()
 
+def drop_item(player, item):
+    player.remove_item(item)
+
 # Main
 #
 
@@ -74,7 +77,7 @@ while playing:
     print(f'\n Inventory: {player.inventory}')
     print(f'\n {player.name}, you are: {player.location.name} \n')
     print(player.location.description)
-    print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [l]ook around')
+    print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [l]ook around, [d]rop item')
     
     where_to = input('Where to? ').lower()
     if where_to == 'q':
@@ -89,13 +92,16 @@ while playing:
         
         if inspect == 'i':
             closer_look(player, player.location.items[0].name)
-            # print({player.location.items[0].description})
-            take = input(f'\n [t]take the {player.location.items[0].name} or [l]eave it? ')
-            if take == 't' and player.location.items[0].name not in player.inventory:
+            take = input(f'\n [t]take the {player.location.items[0].name} or [l]eave it? ').lower()
 
+            if take == 't' and player.location.items[0].name not in player.inventory:
                 add_item(player, player.location.items[0].name)
             else:
                 print(f'you already have the {player.location.items[0].name}')
-   
+    
+    elif where_to == 'd':
+        drop = input(f'\n What item out of inventory would you like to drop? ').capitalize()
+        drop_item(player, drop)
+
     else:
         print(f'Unknown input {where_to}')
