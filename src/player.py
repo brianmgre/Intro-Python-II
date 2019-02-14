@@ -6,6 +6,3 @@ class Player:
     def __init__(self, location):
         self.location = location
         self.inventory = []
-
-    def get(self):
-        self.inventory.append(self)

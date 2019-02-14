@@ -75,19 +75,28 @@ player = Player(room['outside'])
 playing = True
 
 while playing:
-    print(hasattr(player.location, 'item_to'))
+    print(f'\n Inventory: {player.inventory}')
     print(f'\n You are: {player.location.name} \n')
-    if hasattr(player.location, 'item_to'):
-        print(f'\n You see a: {player.location.item_to.name}')
-        print(f'\n {player.location.item_to.description} \n')
+
+    if hasattr(player.location, 'item_to') and player.location.item_to.name not in player.inventory:
+        print(f' You see a: {player.location.item_to.name}')
+        print(f'{player.location.item_to.description} \n')
+
     print(player.location.description)
-    print('\nGo [n]orth, [e]ast, [s]outh, [w]est, g')
+
+    if hasattr(player.location, 'item_to'):
+        print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [g]et')
+    else:
+        print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
 
     where_to = input('Where to? ').lower()
 
     if where_to == 'q':
         playing = False
-    elif where_to in ['n', 'e', 's', 'w']:
+    elif where_to in ['n', 'e', 's', 'w', 'get']:
         player.location = move_to(where_to, player.location)
+    elif where_to == "g":
+        if hasattr(player.location, 'item_to')and player.location.item_to.name not in player.inventory:
+            player.inventory.append(player.location.item_to.name)
     else:
         print(f'Unknown input {where_to}')
