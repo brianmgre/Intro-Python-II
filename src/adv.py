@@ -4,29 +4,29 @@ from item import Item
 
 # Declare all the rooms
 
-item = {
-    'gold': Item("Gold statue", """the light dances off the statue almost blindly so. The statue resembles a Roman Standard; a solid gold eagle!"""),
+# item = {
+#     'gold': Item("Gold statue", """the light dances off the statue almost blindly so. The statue resembles a Roman Standard; a solid gold eagle!"""),
 
-    'rock': Item("Rock", """On the ground is a small rock, that may be a helpful distraction or weapon"""),
-}
+#     'rock': Item("Rock", """On the ground is a small rock. It may be a helpful distraction or weapon"""),
+# } 
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", [Item("Rock", """a small rock. It may be a helpful distraction or weapon""")]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", [Item("Rock", """a small rock. It may be a helpful distraction or weapon""")]),
 
     'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", [Item("Gold statue", """the light dances off the statue almost blindly so. The statue resembles a Roman Standard; a solid gold eagle!""")]),
 
     'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", [Item("Rock", """a small rock. It may be a helpful distraction or weapon""")]),
 
     'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", [Item("Rock", """a small rock. It may be a helpful distraction or weapon""")]),
 }
 
 
@@ -41,8 +41,8 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-room['treasure'].item_to = item['gold']
-room['outside'].item_to = item['rock']
+# room['overlook'].items = item['gold']
+# room['outside'].items = item['rock']
 
 
 def move_to(direct, location):
@@ -52,48 +52,50 @@ def move_to(direct, location):
     print('\n You cannot go that way')
     return location
 
+def add_item(player, item):
+    player.get_item(item)
+    player.location.delete(item)
+
+def look(player, location):
+    player.location.look_around()
+
+def closer_look(player, location):
+    player.location.inspect()
 
 # Main
 #
 
-# Make a new player object that is currently in the 'outside' room.
 name = input('What is your name? ')
 player = Player(name, room['outside'])
-
-# Write a loop that:
-#
-# * Prints the current room name
-# * Prints the current description (the textwrap module might be useful here).
-# * Waits for user input and decides what to do.
-#
-# If the user enters a cardinal direction, attempt to move to the room there.
-# Print an error message if the movement isn't allowed.
-#
-# If the user enters "q", quit the game.
 
 playing = True
 
 while playing:
     print(f'\n Inventory: {player.inventory}')
     print(f'\n {player.name}, you are: {player.location.name} \n')
-
-    if hasattr(player.location, 'item_to') and player.location.item_to.name not in player.inventory:
-        print(f' You see a: {player.location.item_to.name}')
-        print(f'{player.location.item_to.description} \n')
-
     print(player.location.description)
-
-    if hasattr(player.location, 'item_to'):
-        print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [g]et')
-    else:
-        print('\nGo [n]orth, [e]ast, [s]outh, [w]est')
+    print('\nGo [n]orth, [e]ast, [s]outh, [w]est, [l]ook around')
+    
     where_to = input('Where to? ').lower()
     if where_to == 'q':
         playing = False
-    elif where_to in ['n', 'e', 's', 'w', 'get']:
+
+    elif where_to in ['n', 'e', 's', 'w']:
         player.location = move_to(where_to, player.location)
-    elif where_to == "g":
-        if hasattr(player.location, 'item_to')and player.location.item_to.name not in player.inventory:
-            player.inventory.append(player.location.item_to.name)
+
+    elif where_to == 'l':
+        look(player, player.location)
+        inspect = input(f'\n[i]nspect {player.location.items[0].name} or [l]eave it? ')
+        
+        if inspect == 'i':
+            closer_look(player, player.location.items[0].name)
+            # print({player.location.items[0].description})
+            take = input(f'\n [t]take the {player.location.items[0].name} or [l]eave it? ')
+            if take == 't' and player.location.items[0].name not in player.inventory:
+
+                add_item(player, player.location.items[0].name)
+            else:
+                print(f'you already have the {player.location.items[0].name}')
+   
     else:
         print(f'Unknown input {where_to}')
