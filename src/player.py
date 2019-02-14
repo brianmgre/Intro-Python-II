@@ -21,5 +21,5 @@ class Player:
             print('\nYou do not have that item in inventory')
         else:
             self.inventory.remove(item)
-            print(f'\nYour {item} is dropped and smashes into a thousand pieces on the floor')
+            print(f'\nYour {item} is dropped and it smashes into a thousand pieces on the floor')
 

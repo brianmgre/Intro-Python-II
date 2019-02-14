@@ -87,23 +87,26 @@ while playing:
         player.location = move_to(where_to, player.location)
 
     elif where_to == 'l':
-        look(player, player.location)
-        inspect = input(f'\n[i]nspect {player.location.items[0].name} or [l]eave it? ')
-        
-        if inspect == 'i':
-            closer_look(player, player.location.items[0].name)
-            take = input(f'\n [t]take the {player.location.items[0].name} or [l]eave it? ').lower()
+        if len(player.location.items) > 0:
+            look(player, player.location)
+            inspect = input(f'\n[i]nspect {player.location.items[0].name} or [l]eave it? ')
+                
+            if inspect == 'i':
+                closer_look(player, player.location.items[0].name)
+                take = input(f'\n [t]take the {player.location.items[0].name} or [l]eave it? ').lower()
 
-            if take == 't' and player.location.items[0].name not in player.inventory:
-                add_item(player, player.location.items[0].name)
-            else:
-                print(f'you already have the {player.location.items[0].name}')
+                if take == 't' and player.location.items[0].name not in player.inventory:
+                    add_item(player, player.location.items[0].name)
+                else:
+                    print(f'you already have the {player.location.items[0].name}')
+        else:
+            print('\n There is nothing here')
     
     elif where_to == 'd':
         if len(player.inventory) == 0:
             print("\nyou don't have anything to drop")
         else:
-            drop = input(f'\n What item out of inventory would you like to drop? ').capitalize()
+            drop = input(f'\n What item out of inventory would you like to drop? ').lower().capitalize()
             drop_item(player, drop)
 
     else:

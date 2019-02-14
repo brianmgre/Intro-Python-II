@@ -13,10 +13,7 @@ class Room:
         return(f'{self.name}, {self.description}')
 
     def look_around(self):
-        if self.items[0].name == None:
-            print ('there is nothing here')
-        else:
-            print(f"You see a {self.items[0].name}")
+        print(f"You see a {self.items[0].name}")
 
     def inspect(self):
         if self.items[0].name == None:
@@ -25,7 +22,7 @@ class Room:
             print(f'\ntaking a closer look you see {self.items[0].description}')
 
     def delete(self, item):
-        self.items[0].name = None
-        self.items[0].description = None
+        self.items.remove(self.items[0])
+
 
         
