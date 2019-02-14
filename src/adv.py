@@ -100,8 +100,11 @@ while playing:
                 print(f'you already have the {player.location.items[0].name}')
     
     elif where_to == 'd':
-        drop = input(f'\n What item out of inventory would you like to drop? ').capitalize()
-        drop_item(player, drop)
+        if len(player.inventory) == 0:
+            print("\nyou don't have anything to drop")
+        else:
+            drop = input(f'\n What item out of inventory would you like to drop? ').capitalize()
+            drop_item(player, drop)
 
     else:
         print(f'Unknown input {where_to}')
